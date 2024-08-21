@@ -1,15 +1,29 @@
 import 'package:ecommercetemplate/core/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final String label;
-
   final String hint;
+  final TextEditingController controller;
 
-  final String Function(String?)? validation;
+  final String? Function(String?)? validation;
+  final bool? error;
 
   const CustomTextField(
-      {super.key, required this.label, required this.hint, this.validation});
+      {super.key,
+      required this.label,
+      required this.hint,
+      this.validation,
+      required this.controller,
+      this.error});
+
+  @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  bool textHidden = true;
+  String? errorText ;
 
   @override
   Widget build(BuildContext context) {
@@ -19,32 +33,69 @@ class CustomTextField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            label,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            widget.label,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           TextFormField(
-              validator: validation,
+              controller: widget.controller,
+              obscureText: widget.label == "Password" && textHidden == true
+                  ? true
+                  : false,
+              validator: (value) {
+                String? validationResult = widget.validation?.call(value);
+                setState(() {
+                  errorText = validationResult;
+                });
+                return validationResult;
+              },
               cursorColor: AppConstants.kPrimaryColor,
               decoration: InputDecoration(
+                  focusedErrorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.red,
+                      ),
+                      borderRadius: BorderRadius.circular(12)),
+                  errorStyle: const TextStyle(color: Colors.red),
+                  errorBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.red,
+                      ),
+                      borderRadius: BorderRadius.circular(12)),
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                   enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.grey,
                       ),
                       borderRadius: BorderRadius.circular(12)),
                   focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: AppConstants.kPrimaryColor,
                       ),
                       borderRadius: BorderRadius.circular(12)),
-                  hintText: hint,
-                  hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
+                  hintText: widget.hint,
+                  hintStyle: const TextStyle(color: Colors.grey, fontSize: 12),
                   suffixIcon:
-                      label == "Password" ? const Icon(Icons.visibility , color: Colors.grey,) : null)),
+                  errorText != null ? const Icon(Icons.error_outline , color: Colors.red,):
+                  widget.label == "Password"
+                      ? InkWell(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () {
+                            setState(() {
+                              textHidden = !textHidden;
+                            });
+                          },
+                          child: Icon(
+                            textHidden == false
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.grey,
+                          ))
+                      : null)),
         ],
       ),
     );

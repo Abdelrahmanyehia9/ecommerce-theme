@@ -5,11 +5,12 @@ import 'package:flutter_svg/svg.dart';
 
 class BigButton extends StatelessWidget {
   final String label ;
-  const BigButton({super.key , required this.label});
+  final GestureTapCallback? onTap ;
+  const BigButton({super.key , required this.label , this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return  ElevatedButton(onPressed: (){}, style: ElevatedButton.styleFrom(
+    return  ElevatedButton(onPressed: onTap, style: ElevatedButton.styleFrom(
       fixedSize: Size(screenWidth(context), 60) , backgroundColor: AppConstants.kPrimaryColor ,foregroundColor: Colors.white,
       shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12) ,
@@ -18,10 +19,10 @@ class BigButton extends StatelessWidget {
     ), child:Text(label) ,  );
   }
 }
-class BigIconButton extends StatelessWidget {
+class BigIconSocialButton extends StatelessWidget {
   final String label ;
   final String svgPath ;
-  const BigIconButton({super.key , required this.label  , required this.svgPath});
+  const BigIconSocialButton({super.key , required this.label  , required this.svgPath});
 
   @override
   Widget build(BuildContext context) {

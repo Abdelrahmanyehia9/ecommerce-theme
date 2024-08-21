@@ -1,3 +1,5 @@
+import 'package:ecommercetemplate/core/router/app_router.dart';
+import 'package:ecommercetemplate/core/utils/app_constants.dart';
 import 'package:ecommercetemplate/feature/authentication/view/login_screen.dart';
 import 'package:ecommercetemplate/feature/authentication/view/sign_up_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,18 +15,14 @@ class StoreShop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      theme: ThemeData
-        (
-
-      ),
-      initialRoute: "/",
-      routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) => const SignUpScreen(),
-        // When navigating to the "/second" route, build the SecondScreen widget.
-        '/login': (context) => const LoginScreen(),
-      },
+    return   MaterialApp(
+      theme: ThemeData(appBarTheme: AppBarTheme(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor ,
+        foregroundColor: AppConstants.kPrimaryColor ,
+      )),
+     debugShowCheckedModeBanner: false,
+      initialRoute: AppRouter.signUpPage,
+      routes: AppRouter.router
 
     );
   }
