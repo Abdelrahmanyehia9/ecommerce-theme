@@ -1,13 +1,20 @@
+import 'package:dio/dio.dart';
 import 'package:ecommercetemplate/core/router/app_router.dart';
-import 'package:ecommercetemplate/core/utils/app_constants.dart';
-import 'package:ecommercetemplate/feature/authentication/view/login_screen.dart';
-import 'package:ecommercetemplate/feature/authentication/view/sign_up_screen.dart';
+import 'package:ecommercetemplate/core/service/api_service.dart';
+import 'package:ecommercetemplate/core/service/single_ton.dart';
+import 'package:ecommercetemplate/feature/home/controller/all_product_cubit.dart';
+import 'package:ecommercetemplate/feature/home/controller/feature_product_cubit.dart';
+import 'package:ecommercetemplate/feature/home/controller/main_categories_cubit.dart';
+import 'package:ecommercetemplate/feature/home/controller/on_sale_cubit.dart';
+import 'package:ecommercetemplate/feature/home/data/home_repo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main(){
+import 'feature/home/controller/sub_categories_cubit.dart';
 
-
-  runApp(const StoreShop()) ;
+void main() {
+  setupSingleTon() ;
+  runApp(const StoreShop());
 }
 
 class StoreShop extends StatelessWidget {
@@ -15,15 +22,25 @@ class StoreShop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return   MaterialApp(
-      theme: ThemeData(appBarTheme: AppBarTheme(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor ,
-        foregroundColor: AppConstants.kPrimaryColor ,
-      )),
-     debugShowCheckedModeBanner: false,
-      initialRoute: AppRouter.signUpPage,
-      routes: AppRouter.router
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context)=> MainCategoriesCubit(getIt.get<HomeRepo>())..fetch() ),
+        BlocProvider(create: (context)=> SubCategoriesCubit(getIt.get<HomeRepo>()) ),
+        BlocProvider(create: (context)=> FeatureProductCubit(getIt.get<HomeRepo>()) ),
+        BlocProvider(create: (context)=> OnSaleProductCubit(getIt.get<HomeRepo>()) ),
+        BlocProvider(create: (context)=> AllProductCubit(getIt.get<HomeRepo>()) ),
 
+
+
+      ],
+      child: MaterialApp(
+          theme: ThemeData(
+              appBarTheme: AppBarTheme(
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor
+          )),
+          debugShowCheckedModeBanner: false,
+          initialRoute: AppRouter.homeScreen,
+          routes: AppRouter.router),
     );
   }
 }

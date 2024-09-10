@@ -8,7 +8,6 @@ import 'package:ecommercetemplate/feature/authentication/view/widget/text_button
 import 'package:flutter/material.dart';
 import '../../../core/widgets/custom_text_feild.dart';
 
-
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -20,7 +19,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
 
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
 
@@ -52,29 +50,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 18,
                   ),
                   CustomTextField(
-                    hint: "Enter your full name",
-                    label: "Full name",
-                    controller: usernameController,
-                    validation:(value)=>Validation.validatePassword(value ??"")
-                  ),
+                      hint: "Enter your full name",
+                      label: "Full name",
+                      controller: usernameController,
+                      validation: (value) =>
+                          Validation.validatePassword(value ?? "")),
                   CustomTextField(
                     hint: "Enter your email address",
                     label: "Email",
                     controller: emailController,
-                    validation: (value)=> Validation.validateEmail(value??""),
+                    validation: (value) =>
+                        Validation.validateEmail(value ?? ""),
                   ),
                   CustomTextField(
                     hint: "Enter your Password",
                     label: "Password",
                     controller: passwordController,
-                    validation: (value)=> Validation.validatePassword(value??""),
+                    validation: (value) =>
+                        Validation.validatePassword(value ?? ""),
                   ),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                         "By signing up you agree to our Terms, Privacy Policy, and Cookie Use"),
                   ),
-                  const SizedBox(height: 16,),
+                  const SizedBox(
+                    height: 16,
+                  ),
                   BigButton(
                     label: "Sign up",
                     onTap: () {

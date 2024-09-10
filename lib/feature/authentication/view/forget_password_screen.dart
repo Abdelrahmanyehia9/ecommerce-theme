@@ -14,8 +14,10 @@ class ForgetPasswordScreen extends StatefulWidget {
 }
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
-  TextEditingController controller = TextEditingController() ;
-  GlobalKey<FormState> globalKey = GlobalKey<FormState>() ;
+  TextEditingController controller = TextEditingController();
+
+  GlobalKey<FormState> globalKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,19 +30,38 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 24,),
-              Text("Forgot password" ,style: KTextStyle.h1,) ,
-              Text("Enter your email for the verification process. We will send 4 digits code to your email." , style: TextStyle(color: Colors.grey),) ,
-              SizedBox(height: 18,),
-              CustomTextField(hint: "Enter your email address", label: "Email", controller: controller,
-                validation: (value)=>Validation.validateEmail(value??""),) ,
-              Spacer() ,
-              BigButton(label: "Send Code" , onTap: (){
-                if(globalKey.currentState!.validate()){
-                  Navigator.pushNamed(context, AppRouter.otpConfirm) ;
-                }
-              },) ,
-              SizedBox(height: 16,)
+              const SizedBox(
+                height: 24,
+              ),
+              const Text(
+                "Forgot password",
+                style: KTextStyle.h1,
+              ),
+              const Text(
+                "Enter your email for the verification process. We will send 4 digits code to your email.",
+                style: TextStyle(color: Colors.grey),
+              ),
+              const SizedBox(
+                height: 18,
+              ),
+              CustomTextField(
+                hint: "Enter your email address",
+                label: "Email",
+                controller: controller,
+                validation: (value) => Validation.validateEmail(value ?? ""),
+              ),
+              const Spacer(),
+              BigButton(
+                label: "Send Code",
+                onTap: () {
+                  if (globalKey.currentState!.validate()) {
+                    Navigator.pushNamed(context, AppRouter.otpConfirm);
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 16,
+              )
             ],
           ),
         ),
