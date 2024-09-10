@@ -29,7 +29,7 @@ class HomeRepo {
       {required int pageNumber, required int categoryId}) async {
     List<ProductModel> products = [];
     var response =
-        await service.get("products?&category=$categoryId?page=$pageNumber");
+        await service.get("products?category=$categoryId&page=$pageNumber&per_page=8");
     for (var item in response) {
       products.add(ProductModel.fromJson(item));
     }
@@ -37,7 +37,7 @@ class HomeRepo {
   }
   Future<List<CategoryModel>> fetchSubCategories(int id) async {
     CategoryModel model = CategoryModel(
-        id: 0,
+        id: id,
         name: "all",
         imgUrl:
             "https://daralbanat.com/wp-content/uploads/2024/02/logo-gif-1.gif");

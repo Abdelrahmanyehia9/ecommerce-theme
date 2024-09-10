@@ -1,3 +1,5 @@
+import 'package:ecommercetemplate/core/widgets/error_loading.dart';
+import 'package:ecommercetemplate/feature/home/view/all_product_view.dart';
 import 'package:ecommercetemplate/feature/home/view/widget/discover_produce_list.dart';
 import 'package:ecommercetemplate/feature/home/view/widget/search_text_field.dart';
 import 'package:ecommercetemplate/feature/home/view/widget/sub_categories.dart';
@@ -54,7 +56,7 @@ class _HomeScreenV2State extends State<HomeScreenV2> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              filterProduct(context),
+              FilterAndSearchProduct() ,
               const SizedBox(
                 height: 8,
               ),
@@ -65,9 +67,9 @@ class _HomeScreenV2State extends State<HomeScreenV2> {
                   if (state is FeatureProductStateLoading){
                     return  const DiscoverProduceListLoading();
                   }else if (state is FeatureProductStateSuccess){
-                    return  DiscoverProduceList(label: "Featured Products", products: state.products,) ;
+                    return  DiscoverProduceList(label: "Featured Products", products: state.products, ) ;
                   }else{
-                    return const Center(child: Text("error please try later"),) ;
+                    return const ErrorLoading(errorLabel: "get Featured products") ;
                   }
 
                 },) ,
@@ -78,7 +80,7 @@ class _HomeScreenV2State extends State<HomeScreenV2> {
                   }else if (state is OnSaleProductStateSuccess){
                     return  DiscoverProduceList(label: "OnSale Products",products: state.products,) ;
                   }else{
-                    return const Center(child: Text("error please try later"),) ;
+                    return const ErrorLoading(errorLabel: "get OnSale products") ;
                   }
 
                 },) ,
@@ -87,9 +89,15 @@ class _HomeScreenV2State extends State<HomeScreenV2> {
                   if (state is AllProductStateLoading){
                     return const DiscoverProduceListLoading();
                   }else if (state is AllProductStateSuccess){
-                    return  DiscoverProduceList(label: "All Products",products: state.products,) ;
+                    return  DiscoverProduceList(label: "All Products",products: state.products,
+
+                      onTap: (){
+                      },
+                    
+                    
+                    ) ;
                   }else{
-                    return const Center(child: Text("error please try later"),) ;
+                    return const ErrorLoading(errorLabel: "get all products") ;
                   }
 
                 },) ,
@@ -104,21 +112,29 @@ class _HomeScreenV2State extends State<HomeScreenV2> {
     ) ;
   }
 
-  Widget filterProduct(BuildContext context) => Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      SizedBox(
-        width: screenWidth(context) * 0.8,
-        child: const SearchTextField(),
-      ),
-      Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: AppConstants.kPrimaryColor,
-          borderRadius: BorderRadius.circular(8),
+}
+class FilterAndSearchProduct extends StatelessWidget {
+  const FilterAndSearchProduct({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return  Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        SizedBox(
+          width: screenWidth(context) * 0.8,
+          child: const SearchTextField(),
         ),
-        child: SvgPicture.asset("assets/icons/Filter.svg"),
-      ),
-    ],
-  );
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: AppConstants.kPrimaryColor,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: SvgPicture.asset("assets/icons/Filter.svg"),
+        ),
+      ],
+    );
+
+  }
 }

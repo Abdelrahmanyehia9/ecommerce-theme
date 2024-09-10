@@ -1,3 +1,4 @@
+import 'package:ecommercetemplate/core/utils/app_constants.dart';
 import 'package:ecommercetemplate/core/utils/dimentions.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -42,7 +43,7 @@ class BrowseAllLoading extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
         Shimmer.fromColors(
-            baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100, child: Container(
+            baseColor: AppConstants.shimmerBaseColor, highlightColor: AppConstants.shimmerHeightLightColor, child: Container(
           width: screenWidth(context) *0.5 ,
           height: 20,
           decoration: BoxDecoration(
@@ -51,7 +52,7 @@ class BrowseAllLoading extends StatelessWidget {
           ),
         )) ,
         Shimmer.fromColors(
-            baseColor: Colors.grey.shade300, highlightColor: Colors.grey.shade100, child: Container(
+            baseColor: AppConstants.shimmerBaseColor, highlightColor: AppConstants.shimmerHeightLightColor, child: Container(
           width: screenWidth(context) *0.2 ,
           height: 12,
           decoration: BoxDecoration(

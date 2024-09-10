@@ -8,7 +8,8 @@ import '../../data/model/product_model.dart';
 class DiscoverProduceList extends StatelessWidget {
   final String label ;
   final List<ProductModel>products ;
-  const DiscoverProduceList({super.key , required this.label , required this.products});
+  final GestureTapCallback? onTap ;
+  const DiscoverProduceList({super.key , required this.label , required this.products , this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,7 @@ class DiscoverProduceList extends StatelessWidget {
       children: [
          BrowseAll(
           label: label,
+           onTap: onTap,
         ),
          SizedBox(
           height: screenHeight(context) * 0.4,

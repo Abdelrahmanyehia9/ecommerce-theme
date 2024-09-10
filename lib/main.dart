@@ -35,8 +35,9 @@ class StoreShop extends StatelessWidget {
       ],
       child: MaterialApp(
           theme: ThemeData(
+            brightness: Brightness.light,
+
               appBarTheme: AppBarTheme(
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor
           )),
           debugShowCheckedModeBanner: false,
           initialRoute: AppRouter.homeScreen,

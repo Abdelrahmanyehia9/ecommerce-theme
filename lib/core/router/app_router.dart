@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../feature/authentication/view/login_screen.dart';
 import '../../feature/authentication/view/sign_up_screen.dart';
 import '../../feature/authentication/view/otp_confirmation_screen.dart';
+import '../../feature/home/view/all_product_view.dart';
 import '../../feature/home/view/home_v2.dart';
 
 

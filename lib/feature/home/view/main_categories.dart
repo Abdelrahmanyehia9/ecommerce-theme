@@ -1,11 +1,12 @@
 import "package:cached_network_image/cached_network_image.dart";
+import "package:ecommercetemplate/core/utils/app_constants.dart";
 import "package:ecommercetemplate/core/utils/dimentions.dart";
 import "package:ecommercetemplate/feature/home/controller/main_categories_cubit.dart";
 import "package:ecommercetemplate/feature/home/controller/main_categories_state.dart";
 import "package:ecommercetemplate/feature/home/data/model/category_model.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-
+import "../../../core/widgets/error_loading.dart";
 import "home_v2.dart";
 
 class MainCategories extends StatelessWidget {
@@ -17,9 +18,7 @@ class MainCategories extends StatelessWidget {
         child: BlocBuilder<MainCategoriesCubit, MainCategoriesState>(
       builder: (context, state) {
         if (state is MainCategoriesStateFailure) {
-          return const Center(
-            child: Text("oops there was an error"),
-          );
+          return const ErrorLoading(errorLabel: "reach this page") ;
         } else if (state is MainCategoriesStateSuccess) {
           List<CategoryModel> filteredCategories = state.categories
               .where((category) => category.count != 0)
@@ -36,7 +35,7 @@ class MainCategories extends StatelessWidget {
               });
         } else {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(color: AppConstants.kPrimaryColor,),
           );
         }
       },
