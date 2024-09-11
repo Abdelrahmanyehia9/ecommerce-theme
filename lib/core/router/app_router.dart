@@ -1,5 +1,6 @@
 import 'package:ecommercetemplate/feature/authentication/view/forget_password_screen.dart';
 import 'package:ecommercetemplate/feature/home/view/home_screen.dart';
+import 'package:ecommercetemplate/feature/product/view/single_product_screen.dart';
 import 'package:flutter/material.dart';
 import '../../feature/authentication/view/login_screen.dart';
 import '../../feature/authentication/view/sign_up_screen.dart';
@@ -18,6 +19,7 @@ static const forgetPassword = "/forgetPassword" ;
 static const otpConfirm = "/OTPConfirm" ;
 static const homeScreen = "/home" ;
 static const homeV2 = "/homeV2";
+static const singleProductScreen = "/singleProduct" ;
 
   static Map<String, Widget Function(BuildContext)> router = {
 
@@ -30,6 +32,9 @@ static const homeV2 = "/homeV2";
     homeScreen:(context)=>const HomeScreen() ,
     forgetPassword :(context)=>const ForgetPasswordScreen(),
     otpConfirm :(context)=> OtpConfirmationScreen() ,
+    singleProductScreen :(context)=> const SingleProductScreen() ,
+
+
 
   };
 

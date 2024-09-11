@@ -9,7 +9,7 @@ class HomeRepo {
       {required int pageNumber, required int categoryId}) async {
     List<ProductModel> products = [];
     var response = await service
-        .get("products?featured=true&category=$categoryId?page=$pageNumber");
+        .get("products?category=$categoryId&page=$pageNumber&per_page=8&featured=true");
     for (var item in response) {
       products.add(ProductModel.fromJson(item));
     }
@@ -19,7 +19,7 @@ class HomeRepo {
       {required int pageNumber, required int categoryId}) async {
     List<ProductModel> products = [];
     var response = await service
-        .get("products?on_sale=true&category=$categoryId?page=$pageNumber");
+        .get("products?category=$categoryId&page=$pageNumber&per_page=8&on_sale=true");
     for (var item in response) {
       products.add(ProductModel.fromJson(item));
     }

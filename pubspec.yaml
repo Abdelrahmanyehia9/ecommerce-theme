@@ -47,6 +47,9 @@ dependencies:
   carousel_slider: ^5.0.0
   polar_tab_bar: ^0.0.2
   get_it: ^7.7.0
+  flexi_productimage_slider: ^1.1.1
+  animated_rating_stars: ^1.0.1
+  accordion: ^2.6.0
 
 dev_dependencies:
   flutter_test:

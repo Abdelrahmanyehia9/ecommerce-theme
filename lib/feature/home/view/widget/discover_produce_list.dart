@@ -9,7 +9,8 @@ class DiscoverProduceList extends StatelessWidget {
   final String label ;
   final List<ProductModel>products ;
   final GestureTapCallback? onTap ;
-  const DiscoverProduceList({super.key , required this.label , required this.products , this.onTap});
+  final bool? showSeeAll ;
+  const DiscoverProduceList({super.key , required this.label , required this.products , this.onTap , this.showSeeAll});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class DiscoverProduceList extends StatelessWidget {
          BrowseAll(
           label: label,
            onTap: onTap,
+           showSeeAll: showSeeAll,
         ),
          SizedBox(
           height: screenHeight(context) * 0.4,
@@ -26,7 +28,7 @@ class DiscoverProduceList extends StatelessWidget {
               itemCount: products.length,
               separatorBuilder: (context, index) =>
               const SizedBox(
-                width: 4,
+                width: 8,
               ),
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {

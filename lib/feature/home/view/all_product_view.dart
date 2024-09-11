@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecommercetemplate/core/service/api_service.dart';
+import 'package:ecommercetemplate/core/service/single_ton.dart';
 import 'package:ecommercetemplate/core/style/text.dart';
 import 'package:ecommercetemplate/core/utils/dimentions.dart';
 import 'package:ecommercetemplate/feature/home/controller/all_product_cubit.dart';
+import 'package:ecommercetemplate/feature/home/data/home_repo.dart';
 import 'package:ecommercetemplate/feature/home/data/model/product_model.dart';
 import 'package:ecommercetemplate/feature/home/view/home_v2.dart';
 import 'package:ecommercetemplate/feature/home/view/widget/product_item.dart';
@@ -12,7 +15,8 @@ import '../../../core/utils/app_constants.dart';
 
 class AllProductsView extends StatefulWidget {
   final int categoryID ;
-  const AllProductsView({super.key, required this.categoryID,});
+  final bool? isFeatured ;
+  const AllProductsView({super.key, required this.categoryID,this.isFeatured});
 
   @override
   State<AllProductsView> createState() => _AllProductsViewState();
@@ -30,10 +34,12 @@ class _AllProductsViewState extends State<AllProductsView> {
     super.initState();
   }
 
-  Future<void> _fetchPage(int pageKey) async {
+ Future<void> _fetchPage(int pageKey) async {
+    HomeRepo repo = HomeRepo(getIt.get<ApiService>()) ;
     try {
-      final newData = await BlocProvider.of<AllProductCubit>(context).repo
-          .fetchAllProductsInCategory(pageNumber: pageKey, categoryId: widget.categoryID);
+      final newData = widget.isFeatured == null ?await repo.fetchAllProductsInCategory(pageNumber: pageKey, categoryId: widget.categoryID)
+          : widget.isFeatured == true  ?await repo.fetchFeatureProductsInCategory(pageNumber: pageKey, categoryId: widget.categoryID):
+          await repo.fetchOnSaleProductsInCategory(pageNumber: pageKey, categoryId: widget.categoryID) ;
       final isLastPage = newData.isEmpty;
       if (isLastPage) {
         _pagingController.appendLastPage(newData);
@@ -54,6 +60,7 @@ class _AllProductsViewState extends State<AllProductsView> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -74,12 +81,10 @@ class _AllProductsViewState extends State<AllProductsView> {
             const SizedBox(height: 18),
             Expanded(
               child: PagedGridView<int, ProductModel>(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2 , childAspectRatio: 0.55),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2 , childAspectRatio: 0.52,crossAxisSpacing: 4),
                 pagingController: _pagingController,
                 builderDelegate: PagedChildBuilderDelegate<ProductModel>(
-                  itemBuilder: (context, item, index) => ProductItem(
-                    model: item,
-                  ),
+                  itemBuilder: (context, item, index) =>ProductItem(model: item,),
                 ),
               ),
             ),
@@ -101,12 +106,12 @@ class _AllProductsViewState extends State<AllProductsView> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: SizedBox(
-                    width: screenWidth(context) * 0.5,
-                    height: screenHeight(context) * 0.3,
+                    width: screenWidth(context) * 0.4,
+                    height: screenHeight(context) * 0.4,
                     child: CachedNetworkImage(
                       imageUrl: model.imgUrl ??
                           "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                       placeholder: (context, url) => Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
@@ -142,7 +147,6 @@ class _AllProductsViewState extends State<AllProductsView> {
             ],
           ),
         ),
-        const SizedBox(height: 12),
         SizedBox(
           width: screenWidth(context) * .5,
           child: Padding(
@@ -157,47 +161,18 @@ class _AllProductsViewState extends State<AllProductsView> {
             ),
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: Text(
-                "د.ك${model.price}",
-                style: const TextStyle(
-                  color: Colors.grey,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: Text(
+            "د.ك${model.price}",
+            style: const TextStyle(
+              color: Colors.grey,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
             ),
-            model.beforeSale != null && model.price != null
-                ? () {
-              double? beforeSaleValue =
-              double.tryParse(model.beforeSale!);
-              double? priceValue = double.tryParse(model.price!);
-
-              if (beforeSaleValue != null && priceValue != null) {
-                double difference = beforeSaleValue - priceValue;
-                return Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text(
-                    "-${difference.toStringAsFixed(1)} د.ك",
-                    style: const TextStyle(
-                      color: Colors.red,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                );
-              } else {
-                return const SizedBox(); // Handle parsing error
-              }
-            }()
-                : const SizedBox(), // Handle null values
-          ],
+          ),
         ),
+
       ],
     ),
   );

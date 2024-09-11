@@ -15,8 +15,8 @@ import '../../data/model/category_model.dart';
 
 class SubCategories extends StatefulWidget {
   final int id;
-  final void Function(int? id)? onSelected ;
-  const SubCategories({super.key, required this.id , this.onSelected});
+  final void Function(int? id) onSelected ;
+  const SubCategories({super.key, required this.id ,required this.onSelected});
 
   @override
   State<SubCategories> createState() => _SubCategoriesState();
@@ -45,11 +45,12 @@ class _SubCategoriesState extends State<SubCategories> {
                 label: "All categories",
               ),
               SizedBox(
-                height: screenHeight(context) * .18,
+                height: screenHeight(context) * .2,
                 child: ListView.builder(
+                  shrinkWrap: true,
                   itemCount: filteredCategories.length,
                   scrollDirection: Axis.horizontal,
-                  clipBehavior: Clip.none,
+                  clipBehavior: Clip.antiAlias,
                   itemBuilder: (context, index) => subCategoryItem(filteredCategories[index], index), // Pass index here
                 ),
               ),
@@ -66,15 +67,16 @@ class _SubCategoriesState extends State<SubCategories> {
 
   // Modify subCategoryItem to accept index and handle selection
   Widget subCategoryItem(CategoryModel model, int index) => Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding: const EdgeInsets.all(4.0),
     child: InkWell(
-      splashColor: Colors.transparent,highlightColor: Colors.transparent ,hoverColor: Colors.transparent,
+
       onTap: () {
         setState(() {
           _selectedIndex = index;
           BlocProvider.of<AllProductCubit>(context).fetch(1, model.id)  ;
           BlocProvider.of<FeatureProductCubit>(context).fetch(1, model.id)  ;
           BlocProvider.of<OnSaleProductCubit>(context).fetch(1, model.id)  ;
+          widget.onSelected(model.id) ;
 
         });
       },
@@ -93,7 +95,7 @@ class _SubCategoriesState extends State<SubCategories> {
               ),
             ),
             child: CircleAvatar(
-              radius: 36,
+              radius: 40,
               backgroundColor: AppConstants.kPrimaryColor,
               child: CachedNetworkImage(
                 imageUrl: model.imgUrl ?? "",
@@ -119,11 +121,14 @@ class _SubCategoriesState extends State<SubCategories> {
           const SizedBox(
             height: 4,
           ),
-          Text(
-            model.name ?? "dar elbanat",
-            style: const TextStyle(
-              color: AppConstants.kPrimaryColor,
-              fontWeight: FontWeight.bold,
+          Expanded(
+            child: Text(
+              textAlign: TextAlign.center ,
+              model.name?.replaceAll(" ", "\n") ?? "",
+              style: const TextStyle(
+                color: AppConstants.kPrimaryColor,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],
@@ -144,7 +149,7 @@ class SubCategoryLoading extends StatelessWidget {
         ),
         const BrowseAllLoading(),
         SizedBox(
-          height: screenHeight(context) * .15,
+          height: screenHeight(context) * .175,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             clipBehavior: Clip.none,

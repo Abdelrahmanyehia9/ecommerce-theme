@@ -7,8 +7,9 @@ class BrowseAll extends StatelessWidget {
   final String label;
 
   final GestureTapCallback? onTap;
+  final bool? showSeeAll ;
 
-  const BrowseAll({super.key, required this.label, this.onTap});
+  const BrowseAll({super.key, required this.label, this.onTap , this.showSeeAll});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class BrowseAll extends StatelessWidget {
             label,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          InkWell(
+       showSeeAll == false ? SizedBox():   InkWell(
               onTap: onTap,
               child: const Text(
                 "see all ",
